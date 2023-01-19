@@ -13,4 +13,8 @@ public class BookRepository {
     public List<Book> getBooks() {
         return this.books;
     }
+
+    public void deleteBook(int index){
+        books.remove(index);
+    }
 }

@@ -16,11 +16,19 @@ public class BookService {
         book.setAuthor(scanner.nextLine());
         repository.addBook(book);
     }
+
     public void showMyLibrary(){
         List<Book> books = repository.getBooks();
         int index = 0;
         for (Book book: books) {
             System.out.println(++index + ". Title: " + book.getTitle() + ", Author: " + book.getAuthor());
         }
+    }
+
+    public void deleteBook() {
+        showMyLibrary();
+        System.out.println("Please, choose number (book to delete):");
+        repository.deleteBook(scanner.nextInt() - 1);
+        System.out.println("Your book has been removed succesfully");
     }
 }
