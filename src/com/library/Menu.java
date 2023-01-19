@@ -4,16 +4,18 @@ import java.util.Scanner;
 
 public class Menu {
 
+    private final static BookService bookService = new BookService();
+
     public static void mainMenu() {
         Scanner scanner = new Scanner(System.in);
+
         int option = 1;
 
-        while (option != 5) {
+        while (true) {
             printMenu();
             option = scanner.nextInt();
             manageOptions(option);
         }
-        System.exit(0);
     }
 
     private static void printMenu() {
@@ -30,6 +32,7 @@ public class Menu {
         switch (option) {
             case 1:
                 System.out.println("Add a book to Library");
+                bookService.addBook();
                 break;
             case 2:
                 System.out.println("Edit a book in Library");
@@ -39,6 +42,9 @@ public class Menu {
                 break;
             case 4:
                 System.out.println("Your Library");
+                break;
+            case 5:
+                System.exit(0);
                 break;
             default:
                 System.out.println("Choose a number between 1 and 5.");
