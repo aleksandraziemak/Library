@@ -10,4 +10,10 @@ public class Book {
     public void setAuthor(String author) {
         this.author = author;
     }
+    public String getTitle() {
+        return this.title;
+    }
+    public String getAuthor() {
+        return this.author;
+    }
 }

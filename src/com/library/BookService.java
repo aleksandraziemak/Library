@@ -1,6 +1,7 @@
 package com.library;
 
 
+import java.util.List;
 import java.util.Scanner;
 
 public class BookService {
@@ -14,5 +15,12 @@ public class BookService {
         System.out.println("Author:");
         book.setAuthor(scanner.nextLine());
         repository.addBook(book);
+    }
+    public void showMyLibrary(){
+        List<Book> books = repository.getBooks();
+        int index = 0;
+        for (Book book: books) {
+            System.out.println(++index + ". Title: " + book.getTitle() + ", Author: " + book.getAuthor());
+        }
     }
 }

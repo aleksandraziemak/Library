@@ -42,6 +42,7 @@ public class Menu {
                 break;
             case 4:
                 System.out.println("Your Library");
+                bookService.showMyLibrary();
                 break;
             case 5:
                 System.exit(0);
