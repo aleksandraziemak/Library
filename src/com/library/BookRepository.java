@@ -17,4 +17,8 @@ public class BookRepository {
     public void deleteBook(int index){
         books.remove(index);
     }
+
+    public Book getBook(int index){
+        return books.get(index);
+    }
 }

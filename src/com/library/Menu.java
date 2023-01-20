@@ -36,6 +36,7 @@ public class Menu {
                 break;
             case 2:
                 System.out.println("Edit a book in Library");
+                bookService.editBook();
                 break;
             case 3:
                 System.out.println("Delete book from Library");
