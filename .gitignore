@@ -1,3 +1,5 @@
 .idea
 Library.iml
 out
+.gradle
+build
