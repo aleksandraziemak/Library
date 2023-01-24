@@ -31,15 +31,12 @@ public class Menu {
     private static void manageOptions(int option) {
         switch (option) {
             case 1:
-                System.out.println("Add a book to Library");
                 bookService.addBook();
                 break;
             case 2:
-                System.out.println("Edit a book in Library");
                 bookService.editBook();
                 break;
             case 3:
-                System.out.println("Delete book from Library");
                 bookService.deleteBook();
                 break;
             case 4:
@@ -54,5 +51,4 @@ public class Menu {
                 break;
         }
     }
-
 }
