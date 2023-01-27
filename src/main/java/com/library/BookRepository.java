@@ -24,7 +24,7 @@ public class BookRepository {
         return getBooksFromJsonFile().get(index);
     }
 
-    public List <Book> getBooksFromJsonFile() {
+    public List<Book> getBooksFromJsonFile() {
         ArrayList<Book> books = new ArrayList<>();
         final JSONParser parser = new JSONParser();
         try {

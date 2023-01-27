@@ -24,7 +24,8 @@ public class Menu {
         System.out.println("2 - Edit a book in Library");
         System.out.println("3 - Delete book from Library");
         System.out.println("4 - Show the Library");
-        System.out.println("5 - Exit");
+        System.out.println("5 - Search books");
+        System.out.println("0 - Exit");
         System.out.println("Choose option: ");
     }
 
@@ -44,6 +45,10 @@ public class Menu {
                 bookService.showMyLibrary();
                 break;
             case 5:
+                System.out.println("Searching in Library");
+                bookService.searchLibrary();
+                break;
+            case 0:
                 System.exit(0);
                 break;
             default:
