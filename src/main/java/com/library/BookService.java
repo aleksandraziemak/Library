@@ -1,6 +1,7 @@
 package com.library;
 
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -23,7 +24,53 @@ public class BookService {
         List<Book> books = repository.getBooksFromJsonFile();
         int index = 0;
         for (Book book : books) {
-            System.out.println(++index + ". Title: " + book.getTitle() + ", Author: " + book.getAuthor());
+            System.out.println(++index + ". " + book.getDescription());
+        }
+    }
+
+    public void searchLibrary() {
+        System.out.println("Title / Author Name? (t / a)");
+        String getOption = scanner.nextLine();
+        searchingLibrary(getOption);
+    }
+
+    private void searchingLibrary(String editOption) {
+        List<Book> books = repository.getBooksFromJsonFile();
+        switch (editOption) {
+            case "t":
+                System.out.println("Write a title:");
+                break;
+            case "a":
+                System.out.println("Write an author:");
+                break;
+            default:
+                System.out.println("Wrong input");
+                searchLibrary();
+                break;
+        }
+        String search = scanner.nextLine();
+        List<Book> searchedBooks = searchingLibrary(books, search, editOption);
+        showBooks(searchedBooks);
+    }
+
+    private List<Book> searchingLibrary(List<Book> books, String search, String editOption) {
+        List<Book> searchedBooks = new ArrayList<>();
+        for (Book book : books) {
+            if (editOption.equals("t") && book.getTitle().contains(search)
+                    || editOption.equals("a") && book.getAuthor().contains(search)) {
+                searchedBooks.add(book);
+            }
+        }
+        return searchedBooks;
+    }
+
+    private void showBooks(List<Book> searchedBooks) {
+        if (searchedBooks.isEmpty()) {
+            System.out.println("No matching books found");
+        } else {
+            for (int i = 0; i < searchedBooks.size(); i++) {
+                System.out.println((i + 1) + ". " + searchedBooks.get(i).getDescription());
+            }
         }
     }
 
