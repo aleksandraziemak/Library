@@ -20,7 +20,7 @@ public class BookService {
     }
 
     public void showMyLibrary() {
-        List<Book> books = repository.getBooks();
+        List<Book> books = repository.getBooksFromJsonFile();
         int index = 0;
         for (Book book : books) {
             System.out.println(++index + ". Title: " + book.getTitle() + ", Author: " + book.getAuthor());
@@ -38,7 +38,7 @@ public class BookService {
                 repository.deleteBook(index - 1);
                 break;
             } catch (InputMismatchException | IndexOutOfBoundsException exception) {
-                System.out.println("Wrong input, please choose number between 1 and " + repository.getBooks().size());
+                System.out.println("Wrong input, please choose number between 1 and " + repository.getBooksFromJsonFile().size());
                 scanner.nextLine();
             }
         }
@@ -109,9 +109,9 @@ public class BookService {
     }
 
     private boolean isInputInvalid(String input) {
-        boolean inputInvalid = !input.matches("[1-9]") || Integer.parseInt(input) < 1 || Integer.parseInt(input) > repository.getBooks().size();
+        boolean inputInvalid = !input.matches("[1-9]") || Integer.parseInt(input) < 1 || Integer.parseInt(input) > repository.getBooksFromJsonFile().size();
         if (inputInvalid) {
-            System.out.println("Wrong input, please choose number between 1 and " + repository.getBooks().size());
+            System.out.println("Wrong input, please choose number between 1 and " + repository.getBooksFromJsonFile().size());
         }
         return inputInvalid;
     }
