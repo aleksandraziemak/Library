@@ -6,6 +6,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,30 @@ import java.util.List;
 public class BookRepository {
 
     public void addBook(Book book) {
-        throw new UnsupportedOperationException();
+        List<Book> books = getBooksFromJsonFile();
+        books.add(book);
+        JSONArray jsonBooks = jsonBooks(books);
+        writeToJsonFile(jsonBooks);
+    }
+
+    private JSONArray jsonBooks (List<Book> books){
+        JSONArray jsonBooks = new JSONArray();
+        for (Book book: books) {
+            JSONObject newBook = new JSONObject();
+            newBook.put("title", book.getTitle());
+            newBook.put("author", book.getAuthor());
+            jsonBooks.add(newBook);
+        }
+        return jsonBooks;
+    }
+
+    private void writeToJsonFile(JSONArray jsonBooks) {
+        try (FileWriter file = new FileWriter("src/main/resources/Books.json")) {
+            file.write(jsonBooks.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void deleteBook(int index) {
