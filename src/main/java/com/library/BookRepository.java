@@ -41,7 +41,10 @@ public class BookRepository {
     }
 
     public void deleteBook(int index) {
-        throw new UnsupportedOperationException();
+        List<Book> books = getBooksFromJsonFile();
+        books.remove(index);
+        JSONArray jsonBooks = jsonBooks(books);
+        writeToJsonFile(jsonBooks);
     }
 
     public Book getBook(int index) {
