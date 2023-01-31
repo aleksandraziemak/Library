@@ -20,9 +20,9 @@ public class BookRepository {
         writeToJsonFile(jsonBooks);
     }
 
-    private JSONArray jsonBooks (List<Book> books){
+    private JSONArray jsonBooks(List<Book> books) {
         JSONArray jsonBooks = new JSONArray();
-        for (Book book: books) {
+        for (Book book : books) {
             JSONObject newBook = new JSONObject();
             newBook.put("title", book.getTitle());
             newBook.put("author", book.getAuthor());
@@ -43,6 +43,20 @@ public class BookRepository {
     public void deleteBook(int index) {
         List<Book> books = getBooksFromJsonFile();
         books.remove(index);
+        JSONArray jsonBooks = jsonBooks(books);
+        writeToJsonFile(jsonBooks);
+    }
+
+    public void settingNewTitle(int index, String title) {
+        List<Book> books = getBooksFromJsonFile();
+        books.get(index).setTitle(title);
+        JSONArray jsonBooks = jsonBooks(books);
+        writeToJsonFile(jsonBooks);
+    }
+
+    public void settingNewAuthor(int index, String author) {
+        List<Book> books = getBooksFromJsonFile();
+        books.get(index).setAuthor(author);
         JSONArray jsonBooks = jsonBooks(books);
         writeToJsonFile(jsonBooks);
     }

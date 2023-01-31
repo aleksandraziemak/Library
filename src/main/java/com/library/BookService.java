@@ -109,7 +109,8 @@ public class BookService {
         switch (editOption) {
             case "y":
                 System.out.println("Set new Title:");
-                repository.getBook(index).setTitle(scanner.nextLine());
+                String newTitle = scanner.nextLine();
+                repository.settingNewTitle(index, newTitle);
                 System.out.println("Title changed successfully");
                 break;
             case "n":
@@ -122,7 +123,8 @@ public class BookService {
         switch (editOption) {
             case "y":
                 System.out.println("Set new Author:");
-                repository.getBook(index).setAuthor(scanner.nextLine());
+                String newAuthor = scanner.nextLine();
+                repository.settingNewAuthor(index, newAuthor);
                 System.out.println("Author changed successfully");
                 break;
             case "n":
