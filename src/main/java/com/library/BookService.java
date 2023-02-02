@@ -13,11 +13,15 @@ public class BookService {
 
     public void addBook() {
         Book book = new Book();
+        Author author = new Author();
         System.out.println("Add a book to Library");
         System.out.println("Title:");
         book.setTitle(scanner.nextLine());
-        System.out.println("Author:");
-        book.setAuthor(scanner.nextLine());
+        System.out.println("Set firstname: ");
+        author.setFirstName(scanner.nextLine());
+        System.out.println("Set lastname: ");
+        author.setLastName(scanner.nextLine());
+        book.setAuthor(author);
         repository.addBook(book);
     }
 
@@ -69,7 +73,7 @@ public class BookService {
     }
 
     private boolean searchCondition(Book book, String search, String editOption) {
-        return (book.getAuthor().contains(search) && editOption.equals("a")) || (book.getTitle().contains(search) && editOption.equals("t"));
+        return (book.getAuthor().getLastName().contains(search) && editOption.equals("a")) || (book.getTitle().contains(search) && editOption.equals("t"));
     }
 
     private void showBooks(List<Book> searchedBooks) {
@@ -110,7 +114,7 @@ public class BookService {
         System.out.println("Do you want to change Title of a book: " + repository.getBook(index).getTitle() + "? (y / n)");
         String option = getOption();
         editingTitle(option, index);
-        System.out.println("Do you want to change Author of a book: " + repository.getBook(index).getTitle() + "? (y / n)");
+        System.out.println("Do you want to change Author of a book: " + repository.getBook(index).getAuthor().getFullName() + "? (y / n)");
         option = getOption();
         editingAuthor(option, index);
     }
@@ -132,13 +136,15 @@ public class BookService {
     private void editingAuthor(String editOption, int index) {
         switch (editOption) {
             case "y":
-                System.out.println("Set new Author:");
-                String newAuthor = scanner.nextLine();
-                repository.settingNewAuthor(index, newAuthor);
+                System.out.println("Set new firstname: ");
+                String newFirstname = scanner.nextLine();
+                System.out.println("Set new lastname: ");
+                String newLastname = scanner.nextLine();
+                repository.settingNewAuthor(index, new Author(newFirstname, newLastname));
                 System.out.println("Author changed successfully");
                 break;
             case "n":
-                System.out.println("Author: " + repository.getBook(index).getAuthor());
+                System.out.println("Author: " + repository.getBook(index).getAuthor().getFullName());
                 break;
         }
     }
