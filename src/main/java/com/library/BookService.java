@@ -1,10 +1,11 @@
 package com.library;
 
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class BookService {
     Scanner scanner = new Scanner(System.in);
@@ -22,10 +23,11 @@ public class BookService {
 
     public void showMyLibrary() {
         List<Book> books = repository.getBooksFromJsonFile();
-        int index = 0;
-        for (Book book : books) {
+        IntStream.range(0, books.size())
+                .forEach(index -> System.out.println((index + 1) + ". " + books.get(index).getDescription()));
+/*        for (Book book : books) {
             System.out.println(++index + ". " + book.getDescription());
-        }
+        }*/
     }
 
     public void searchLibrary() {
@@ -54,23 +56,31 @@ public class BookService {
     }
 
     private List<Book> searchingLibrary(List<Book> books, String search, String editOption) {
-        List<Book> searchedBooks = new ArrayList<>();
-        for (Book book : books) {
+        List<Book> searchedBooks = books.stream()
+                .filter(book -> searchCondition(book, search, editOption))
+                .collect(Collectors.toList());
+        return searchedBooks;
+/*        for (Book book : books) {
             if (editOption.equals("t") && book.getTitle().contains(search)
                     || editOption.equals("a") && book.getAuthor().contains(search)) {
                 searchedBooks.add(book);
             }
-        }
-        return searchedBooks;
+        }*/
+    }
+
+    private boolean searchCondition(Book book, String search, String editOption) {
+        return (book.getAuthor().contains(search) && editOption.equals("a")) || (book.getTitle().contains(search) && editOption.equals("t"));
     }
 
     private void showBooks(List<Book> searchedBooks) {
         if (searchedBooks.isEmpty()) {
-            System.out.println("No matching books found");
+            System.out.println("No books found");
         } else {
-            for (int i = 0; i < searchedBooks.size(); i++) {
+            IntStream.range(0, searchedBooks.size())
+                    .forEach(index -> System.out.println((index + 1) + ". " + searchedBooks.get(index).getDescription()));
+/*            for (int i = 0; i < searchedBooks.size(); i++) {
                 System.out.println((i + 1) + ". " + searchedBooks.get(i).getDescription());
-            }
+            }*/
         }
     }
 

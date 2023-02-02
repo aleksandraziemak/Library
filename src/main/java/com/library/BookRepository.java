@@ -9,7 +9,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BookRepository {
 
@@ -20,15 +22,24 @@ public class BookRepository {
         writeToJsonFile(jsonBooks);
     }
 
-    private JSONArray jsonBooks(List<Book> books) {
+    private JSONArray jsonBooks (List<Book> books){
         JSONArray jsonBooks = new JSONArray();
-        for (Book book : books) {
+        books.stream()
+                .sorted(Comparator.comparing(book -> book.getAuthor()))
+                .map(book -> {
+                    JSONObject newBook = new JSONObject();
+                    newBook.put("title", book.getTitle());
+                    newBook.put("author", book.getAuthor());
+                    return newBook;
+                })
+                .forEach(jsonObj -> jsonBooks.add(jsonObj));
+        return jsonBooks;
+/*        for (Book book: books) {
             JSONObject newBook = new JSONObject();
             newBook.put("title", book.getTitle());
             newBook.put("author", book.getAuthor());
             jsonBooks.add(newBook);
-        }
-        return jsonBooks;
+        }*/
     }
 
     private void writeToJsonFile(JSONArray jsonBooks) {
