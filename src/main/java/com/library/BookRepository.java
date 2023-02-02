@@ -15,6 +15,12 @@ import java.util.stream.Collectors;
 
 public class BookRepository {
 
+    private static final String FIRST_NAME = "firstName";
+    private static final String LAST_NAME = "lastName";
+    private static final String TITLE = "title";
+    private static final String AUTHOR = "author";
+    private static final String PATH_TO_JSON_FILE = "src/main/resources/Books.json";
+
     public void addBook(Book book) {
         List<Book> books = getBooksFromJsonFile();
         books.add(book);
@@ -22,14 +28,16 @@ public class BookRepository {
         writeToJsonFile(jsonBooks);
     }
 
-    private JSONArray jsonBooks (List<Book> books){
+    private JSONArray jsonBooks(List<Book> books) {
         JSONArray jsonBooks = new JSONArray();
         books.stream()
-                .sorted(Comparator.comparing(book -> book.getAuthor()))
                 .map(book -> {
                     JSONObject newBook = new JSONObject();
-                    newBook.put("title", book.getTitle());
-                    newBook.put("author", book.getAuthor());
+                    newBook.put(TITLE, book.getTitle());
+                    JSONObject newAuthor = new JSONObject();
+                    newAuthor.put(FIRST_NAME, book.getAuthor().getFirstName());
+                    newAuthor.put(LAST_NAME, book.getAuthor().getLastName());
+                    newBook.put(AUTHOR, newAuthor);
                     return newBook;
                 })
                 .forEach(jsonObj -> jsonBooks.add(jsonObj));
@@ -43,7 +51,7 @@ public class BookRepository {
     }
 
     private void writeToJsonFile(JSONArray jsonBooks) {
-        try (FileWriter file = new FileWriter("src/main/resources/Books.json")) {
+        try (FileWriter file = new FileWriter(PATH_TO_JSON_FILE)) {
             file.write(jsonBooks.toJSONString());
             file.flush();
         } catch (IOException e) {
@@ -65,7 +73,7 @@ public class BookRepository {
         writeToJsonFile(jsonBooks);
     }
 
-    public void settingNewAuthor(int index, String author) {
+    public void settingNewAuthor(int index, Author author) {
         List<Book> books = getBooksFromJsonFile();
         books.get(index).setAuthor(author);
         JSONArray jsonBooks = jsonBooks(books);
@@ -80,11 +88,13 @@ public class BookRepository {
         ArrayList<Book> books = new ArrayList<>();
         final JSONParser parser = new JSONParser();
         try {
-            FileReader fr = new FileReader("src/main/resources/Books.json"); //wskazuję plik
+            FileReader fr = new FileReader(PATH_TO_JSON_FILE); //wskazuję plik
             JSONArray booksJson = (JSONArray) parser.parse(fr); //wskazuję plik jako Json'owy plik i robię z niego Array
             for (Object object : booksJson) { //idę po kolei po wszystkich obiektach z listy booksJson
                 JSONObject book = (JSONObject) object; //wskazuję, że obiekt book jest obiektem Json'owym
-                books.add(new Book((String) book.get("title"), (String) book.get("author"))); //dodaję new Book do listy books, na podstawie obiektów Json'owych
+                JSONObject jsonAuthor = (JSONObject) book.get(AUTHOR);
+                Author author = new Author((String) jsonAuthor.get(FIRST_NAME), (String) jsonAuthor.get(LAST_NAME));
+                books.add(new Book((String) book.get(TITLE), author)); //dodaję new Book do listy books, na podstawie obiektów Json'owych
 /*              UWAGA! TO JEST TO SAMO TYLKO INACZEJ ZAPISANE:
                 Book newBook = new Book();
                 newBook.setAuthor((String)book.get("author"));
@@ -94,6 +104,8 @@ public class BookRepository {
         } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
-        return books;
+        return books.stream()
+                .sorted(Comparator.comparing(book -> book.getAuthor().getLastName()))
+                .collect(Collectors.toList());
     }
 }

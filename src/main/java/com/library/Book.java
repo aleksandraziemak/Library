@@ -2,12 +2,12 @@ package com.library;
 
 public class Book {
     private String title;
-    private String author;
+    private Author author;
 
     public Book() {
     }
 
-    public Book(String title, String author) {
+    public Book(String title, Author author) {
         this.title = title;
         this.author = author;
     }
@@ -16,7 +16,7 @@ public class Book {
         this.title = title;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
@@ -24,11 +24,11 @@ public class Book {
         return this.title;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return this.author;
     }
 
     public String getDescription() {
-        return "Title: " + title + ", Author: " + author;
+        return "Title: " + title + ", Author: " + author.getFullName();
     }
 }
