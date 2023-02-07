@@ -1,6 +1,10 @@
 package com.library;
 
 
+import com.library.model.Author;
+import com.library.model.Book;
+import com.library.util.UuidGeneratorUtil;
+
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -12,17 +16,25 @@ public class BookService {
     private static final BookRepository repository = new BookRepository();
 
     public void addBook() {
-        Book book = new Book();
+        Book book = new Book(UuidGeneratorUtil.uuidGenerate());
         Author author = new Author();
         System.out.println("Add a book to Library");
         System.out.println("Title:");
         book.setTitle(scanner.nextLine());
-        System.out.println("Set firstname: ");
+        System.out.println("Set first name: ");
         author.setFirstName(scanner.nextLine());
-        System.out.println("Set lastname: ");
+        System.out.println("Set last name: ");
         author.setLastName(scanner.nextLine());
         book.setAuthor(author);
         repository.addBook(book);
+    }
+
+    private void showMyLibrary(List<Book> books) {
+        IntStream.range(0, books.size())
+                .forEach(index -> System.out.println((index + 1) + ". " + books.get(index).getDescription()));
+/*        for (Book book : books) {
+            System.out.println(++index + ". " + book.getDescription());
+        }*/
     }
 
     public void showMyLibrary() {
@@ -47,7 +59,7 @@ public class BookService {
                 System.out.println("Write a title:");
                 break;
             case "a":
-                System.out.println("Write an author:");
+                System.out.println("Write last name of author:");
                 break;
             default:
                 System.out.println("Wrong input");
@@ -90,13 +102,15 @@ public class BookService {
 
     public void deleteBook() {
         System.out.println("Delete book from Library");
-        showMyLibrary();
+        List<Book> books = repository.getBooksFromJsonFile();
+        showMyLibrary(books);
         System.out.println("Please, choose number (book to delete):");
         int index = 0;
         while (true) {
             try {
-                index = scanner.nextInt();
-                repository.deleteBook(index - 1);
+                index = getIndex();
+                Book book = books.get(index);
+                repository.deleteBook(book);
                 break;
             } catch (InputMismatchException | IndexOutOfBoundsException exception) {
                 System.out.println("Wrong input, please choose number between 1 and " + repository.getBooksFromJsonFile().size());
@@ -108,43 +122,49 @@ public class BookService {
 
     public void editBook() {
         System.out.println("Edit a book in Library");
-        showMyLibrary();
+        List<Book> books = repository.getBooksFromJsonFile();
+        showMyLibrary(books);
         System.out.println("Please, choose number (book to edit):");
         int index = getIndex();
-        System.out.println("Do you want to change Title of a book: " + repository.getBook(index).getTitle() + "? (y / n)");
+        Book book = books.get(index);
+        System.out.println("Do you want to change Title of a book: " + book.getTitle() + "? (y / n)");
         String option = getOption();
         editingTitle(option, index);
-        System.out.println("Do you want to change Author of a book: " + repository.getBook(index).getAuthor().getFullName() + "? (y / n)");
+        System.out.println("Do you want to change Author of a book: " + book.getAuthor().getFullName() + "? (y / n)");
         option = getOption();
         editingAuthor(option, index);
     }
 
     private void editingTitle(String editOption, int index) {
+        List<Book> books = repository.getBooksFromJsonFile();
+        Book book = books.get(index);
         switch (editOption) {
             case "y":
                 System.out.println("Set new Title:");
                 String newTitle = scanner.nextLine();
-                repository.settingNewTitle(index, newTitle);
+                repository.settingNewTitle(book, newTitle);
                 System.out.println("Title changed successfully");
                 break;
             case "n":
-                System.out.println("Title: " + repository.getBook(index).getTitle());
+                System.out.println("Title: " + book.getTitle());
                 break;
         }
     }
 
     private void editingAuthor(String editOption, int index) {
+        List<Book> books = repository.getBooksFromJsonFile();
+        Book book = books.get(index);
         switch (editOption) {
             case "y":
-                System.out.println("Set new firstname: ");
+                System.out.println("Set new first name: ");
                 String newFirstname = scanner.nextLine();
-                System.out.println("Set new lastname: ");
+                System.out.println("Set new last name: ");
                 String newLastname = scanner.nextLine();
-                repository.settingNewAuthor(index, new Author(newFirstname, newLastname));
+                repository.settingNewAuthor(book, new Author(newFirstname, newLastname));
                 System.out.println("Author changed successfully");
                 break;
             case "n":
-                System.out.println("Author: " + repository.getBook(index).getAuthor().getFullName());
+                System.out.println("Author: " + book.getAuthor().getFullName());
                 break;
         }
     }

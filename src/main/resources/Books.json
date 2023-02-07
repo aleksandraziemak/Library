@@ -1,23 +1,18 @@
 [
   {
     "author": {
-      "firstName": "Frank",
-      "lastName": "Herbert"
-    },
-    "title": "Diuna"
-  },
-  {
-    "author": {
       "firstName": "A. A.",
       "lastName": "Milne"
     },
-    "title": "Kubu�\u203A Puchatek"
+    "id": "6cac84e0-9dae-4626-a1b1-113d600507ca",
+    "title": "Kubuś Puchatek"
   },
   {
     "author": {
-      "firstName": "Boles�\u201Aaw",
+      "firstName": "Bolesław",
       "lastName": "Prus"
     },
+    "id": "edbaa536-4073-4679-b6df-2398ed1eda9c",
     "title": "Lalka"
   },
   {
@@ -25,13 +20,23 @@
       "firstName": "J. K.",
       "lastName": "Rowling"
     },
-    "title": "Harry Potter i Kamie�\u201E filozoficzny"
+    "id": "1a046583-9fcc-4afa-9add-07d7a5e6f4b8",
+    "title": "Harry Potter i Kamień filozoficzny"
   },
   {
     "author": {
       "firstName": "Henryk",
       "lastName": "Sienkiewicz"
     },
+    "id": "1a046583-9fcc-4afa-9add-07d7a5e6f4b3",
     "title": "W pustyni i w puszczy"
+  },
+  {
+    "author": {
+      "firstName": "Frank",
+      "lastName": "Herbert"
+    },
+    "id": "ea5fca89-e72b-4ad4-8a89-36dda7325114",
+    "title": "Diuna"
   }
 ]
